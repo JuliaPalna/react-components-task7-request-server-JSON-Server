@@ -5,26 +5,23 @@ import { URL_DATA } from '../variables/variables';
 export const useRemoveTodo = ({ setTodos }) => {
     const [isRemoving, setIsRemoving] = useState(false);
 
-    const onRemoveTodo = ({ target }) => {
+    const onRemoveTodo = ({ id }) => {
         setIsRemoving(true);
-
-        const currentTodoId = target.closest('li').id;
 
         utils
             .removeDataFetchRequest({
-                url: `${URL_DATA}/${currentTodoId}`,
+                url: `${URL_DATA}/${id}`,
             })
             .then(() => {
                 setTodos((previous) => {
                     return previous.filter((todo) => {
-                        return String(todo.id) !== String(currentTodoId);
+                        return String(todo.id) !== String(id);
                     });
                 });
             })
             .catch((error) => {
                 console.log(error.message);
-            })
-            .finally(() => setIsRemoving(false));
+            });
     };
 
     return {

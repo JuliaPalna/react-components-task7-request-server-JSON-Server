@@ -33,3 +33,16 @@
 .list_item:nth-child(2n) {
     background-color: var(--item-color);
 }
+
+.button-list {
+    margin-top: 2rem;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.link {
+    color: var(--dark-color-main);
+}

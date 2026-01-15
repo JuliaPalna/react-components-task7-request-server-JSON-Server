@@ -5,23 +5,20 @@ import { URL_DATA } from '../variables/variables';
 export const useUpdateTodos = ({ setTodos }) => {
     const [stateUpdeting, setStateUpdeting] = useState('edit');
 
-    const onUpdateTodos = ({ target, valueTodo }) => {
+    const onUpdateTodos = ({ value, id }) => {
         setStateUpdeting('pending');
-
-        const currentTodo = target.closest('li');
-        const currentTodoId = currentTodo.id;
 
         utils
             .updateDataFetchRequest({
-                url: `${URL_DATA}/${currentTodoId}`,
+                url: `${URL_DATA}/${id}`,
                 data: {
-                    title: valueTodo,
+                    title: value,
                 },
             })
             .then((updateTodo) => {
                 setTodos((previous) => {
                     return previous.map((todo) => {
-                        return String(todo.id) === String(currentTodoId)
+                        return String(todo.id) === String(id)
                             ? updateTodo
                             : todo;
                     });

@@ -1,5 +1,11 @@
 export async function getDataFetchRequest({ url }) {
-    return await fetch(`${url}`).then((response) => response.json());
+    return await fetch(`${url}`).then((response) => {
+        if (!response.ok) {
+            return null;
+        }
+
+        return response.json();
+    });
 }
 
 export async function createDataFetchRequest({ url, data }) {
@@ -22,4 +28,12 @@ export async function removeDataFetchRequest({ url }) {
     return await fetch(url, {
         method: 'DELETE',
     }).then((response) => response.json());
+}
+
+export function getTrimString({ string, length }) {
+    if (string.length > length) {
+        return string.slice(0, length) + `...`;
+    }
+
+    return string;
 }
