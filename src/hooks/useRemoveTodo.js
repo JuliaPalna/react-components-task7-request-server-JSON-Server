@@ -16,12 +16,8 @@ export const useRemoveTodo = () => {
             })
             .then(() => {
                 dispatch({
-                    type: 'SET_TODOS_DATA',
-                    payload: (previous) => {
-                        return previous.filter((todo) => {
-                            return String(todo.id) !== String(id);
-                        });
-                    },
+                    type: 'REMOVE_TODO_DATA',
+                    payload: id,
                 });
             })
             .catch((error) => {

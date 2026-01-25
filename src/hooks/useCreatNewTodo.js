@@ -17,8 +17,8 @@ export const useCreatNewTodo = () => {
             })
             .then((newTodo) => {
                 dispatch({
-                    type: 'SET_TODOS_DATA',
-                    payload: (previous) => [...previous, newTodo],
+                    type: 'SET_TODO_DATA',
+                    payload: newTodo,
                 });
             })
 

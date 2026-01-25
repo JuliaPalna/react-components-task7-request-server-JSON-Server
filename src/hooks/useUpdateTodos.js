@@ -19,14 +19,8 @@ export const useUpdateTodos = () => {
             })
             .then((updateTodo) => {
                 dispatch({
-                    type: 'SET_TODOS_DATA',
-                    payload: (previous) => {
-                        return previous.map((todo) => {
-                            return String(todo.id) === String(id)
-                                ? updateTodo
-                                : todo;
-                        });
-                    },
+                    type: 'UPDATE_TODO_DATA',
+                    payload: { updateTodo, id },
                 });
             })
             .catch((error) => {

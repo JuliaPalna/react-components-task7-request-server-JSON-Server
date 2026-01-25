@@ -31,8 +31,26 @@ export const App = () => {
         const { type, payload } = action;
 
         switch (type) {
-            case 'SET_TODOS_DATA': {
-                setTodos(payload);
+            case 'SET_TODO_DATA': {
+                setTodos((previous) => [...previous, payload]);
+                break;
+            }
+            case 'REMOVE_TODO_DATA': {
+                setTodos((previous) => {
+                    return previous.filter((todo) => {
+                        return String(todo.id) !== String(payload);
+                    });
+                });
+                break;
+            }
+            case 'UPDATE_TODO_DATA': {
+                setTodos((previous) => {
+                    return previous.map((todo) => {
+                        return String(todo.id) === String(payload.id)
+                            ? payload.updateTodo
+                            : todo;
+                    });
+                });
                 break;
             }
             case 'FILTRED_TODOS_DATA':
