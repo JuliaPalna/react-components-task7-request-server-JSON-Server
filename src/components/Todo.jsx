@@ -1,24 +1,20 @@
 import { useState } from 'react';
 import { Button } from './Button';
 import { useRemoveTodo, useUpdateTodos } from '../hooks/';
-import styles from '../styles/listItem.module.css';
+import styles from '../styles/todo.module.css';
 
-export const ListItem = ({ title, setTodos }) => {
+export const Todo = ({ title, id }) => {
     const [valueTodo, setValueTodo] = useState(title);
-    const { isRemoving, onRemoveTodo } = useRemoveTodo({ setTodos });
-    const { stateUpdeting, setStateUpdeting, onUpdateTodos } = useUpdateTodos({
-        setTodos,
-    });
+    const { isRemoving, onRemoveTodo } = useRemoveTodo();
+    const { stateUpdeting, onUpdateTodos } = useUpdateTodos();
 
     const onChangeValue = ({ target }) => {
         setValueTodo(target.value);
     };
 
-    const onClickUpdeting = ({ target }) => {
-        if (stateUpdeting === 'save') {
-            onUpdateTodos({ target, valueTodo });
-        } else if (stateUpdeting === 'edit') {
-            setStateUpdeting('save');
+    const onClickUpdeting = () => {
+        if (stateUpdeting === 'edit') {
+            onUpdateTodos({ id, valueTodo });
         }
     };
 
@@ -26,8 +22,6 @@ export const ListItem = ({ title, setTodos }) => {
         switch (stateUpdeting) {
             case 'pending':
                 return 'Отправка...';
-            case 'save':
-                return 'Сохранить';
             case 'edit':
             default:
                 return 'Редактировать';
@@ -36,20 +30,14 @@ export const ListItem = ({ title, setTodos }) => {
 
     return (
         <>
-            {stateUpdeting !== 'edit' ? (
-                <input
-                    type="text"
-                    name="newTodo"
-                    placeholder="Введите новое дело..."
-                    value={valueTodo}
-                    onChange={onChangeValue}
-                    min={3}
-                    max={20}
-                    className={styles.input}
-                />
-            ) : (
-                <p>{valueTodo}</p>
-            )}
+            <textarea
+                type="text"
+                name="newTodo"
+                placeholder="Введите новое дело..."
+                value={valueTodo}
+                onChange={onChangeValue}
+                className={styles.input}
+            />
 
             <div className={styles['button-list']}>
                 <Button
@@ -62,7 +50,7 @@ export const ListItem = ({ title, setTodos }) => {
 
                 <Button
                     size="smal"
-                    onClick={onRemoveTodo}
+                    onClick={() => onRemoveTodo(id)}
                     isDisabled={isRemoving}
                 >
                     Удалить

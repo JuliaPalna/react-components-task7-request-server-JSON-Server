@@ -1,24 +1,27 @@
-import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import { useState, use } from 'react';
+import { AppContext } from '../context';
+import { URL_DATA } from '../constants/constants';
+import * as utils from '../api/taskApi';
 
-export const useRemoveTodo = ({ setTodos }) => {
+export const useRemoveTodo = () => {
+    const { dispatch } = use(AppContext);
     const [isRemoving, setIsRemoving] = useState(false);
 
-    const onRemoveTodo = ({ target }) => {
+    const onRemoveTodo = (id) => {
         setIsRemoving(true);
 
-        const currentTodoId = target.closest('li').id;
-
         utils
-            .removeDataFetchRequest({
-                url: `${URL_DATA}/${currentTodoId}`,
+            .removeDataFetch({
+                url: `${URL_DATA}/${id}`,
             })
             .then(() => {
-                setTodos((previous) => {
-                    return previous.filter((todo) => {
-                        return String(todo.id) !== String(currentTodoId);
-                    });
+                dispatch({
+                    type: 'SET_TODOS_DATA',
+                    payload: (previous) => {
+                        return previous.filter((todo) => {
+                            return String(todo.id) !== String(id);
+                        });
+                    },
                 });
             })
             .catch((error) => {

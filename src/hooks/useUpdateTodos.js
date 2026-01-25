@@ -1,30 +1,32 @@
-import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import { use, useState } from 'react';
+import { AppContext } from '../context';
+import { URL_DATA } from '../constants/constants';
+import * as utils from '../api/taskApi';
 
-export const useUpdateTodos = ({ setTodos }) => {
+export const useUpdateTodos = () => {
+    const { dispatch } = use(AppContext);
     const [stateUpdeting, setStateUpdeting] = useState('edit');
 
-    const onUpdateTodos = ({ target, valueTodo }) => {
+    const onUpdateTodos = ({ id, valueTodo }) => {
         setStateUpdeting('pending');
 
-        const currentTodo = target.closest('li');
-        const currentTodoId = currentTodo.id;
-
         utils
-            .updateDataFetchRequest({
-                url: `${URL_DATA}/${currentTodoId}`,
+            .updateDataFetch({
+                url: `${URL_DATA}/${id}`,
                 data: {
                     title: valueTodo,
                 },
             })
             .then((updateTodo) => {
-                setTodos((previous) => {
-                    return previous.map((todo) => {
-                        return String(todo.id) === String(currentTodoId)
-                            ? updateTodo
-                            : todo;
-                    });
+                dispatch({
+                    type: 'SET_TODOS_DATA',
+                    payload: (previous) => {
+                        return previous.map((todo) => {
+                            return String(todo.id) === String(id)
+                                ? updateTodo
+                                : todo;
+                        });
+                    },
                 });
             })
             .catch((error) => {

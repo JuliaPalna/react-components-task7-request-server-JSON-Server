@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, use } from 'react';
+import { AppContext } from '../context';
 
-export const useSearchTodo = ({ todos, setFiltredTodos }) => {
+export const useSearchTodo = () => {
+    const { todos, dispatch } = use(AppContext);
     const [searchValue, setSearchValue] = useState('');
 
     const onChange = ({ target }) => {
@@ -12,12 +14,12 @@ export const useSearchTodo = ({ todos, setFiltredTodos }) => {
             return title.includes(searchValue);
         });
 
-        setFiltredTodos(filtredTodos);
+        dispatch({ type: 'FILTRED_TODOS_DATA', payload: filtredTodos });
     };
 
     const onReset = () => {
         setSearchValue('');
-        setFiltredTodos(todos);
+        dispatch({ type: 'FILTRED_TODOS_DATA', payload: todos });
     };
 
     return {

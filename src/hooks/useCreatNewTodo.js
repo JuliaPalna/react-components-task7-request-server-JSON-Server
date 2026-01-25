@@ -1,20 +1,25 @@
-import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import { use, useState } from 'react';
+import { AppContext } from '../context';
+import { URL_DATA } from '../constants/constants';
+import * as utils from '../api/taskApi';
 
-export const useCreatNewTodo = ({ setTodos }) => {
+export const useCreatNewTodo = () => {
+    const { dispatch } = use(AppContext);
     const [isCreating, setIsCreating] = useState(false);
 
     const onAddNewTodo = () => {
         setIsCreating(true);
 
         utils
-            .createDataFetchRequest({
+            .createDataFetch({
                 url: URL_DATA,
-                data: { title: 'Новая задача' },
+                data: { title: '' },
             })
             .then((newTodo) => {
-                setTodos((previous) => [...previous, newTodo]);
+                dispatch({
+                    type: 'SET_TODOS_DATA',
+                    payload: (previous) => [...previous, newTodo],
+                });
             })
 
             .catch((error) => {

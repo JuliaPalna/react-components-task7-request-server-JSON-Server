@@ -2,11 +2,8 @@ import { Button } from './Button';
 import { useSearchTodo } from '../hooks/useSearchTodo';
 import styles from '../styles/searchTodo.module.css';
 
-export const SearchTodo = ({ todos, setFiltredTodos }) => {
-    const { searchValue, onReset, onSearch, onChange } = useSearchTodo({
-        todos,
-        setFiltredTodos,
-    });
+export const SearchTodo = () => {
+    const { searchValue, onReset, onSearch, onChange } = useSearchTodo();
 
     return (
         <div className={styles.container}>
