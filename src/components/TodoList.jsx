@@ -1,7 +1,7 @@
 import { Todo } from './Todo';
 import styles from '../styles/todoList.module.css';
 
-export const TodoList = ({ isLoading, filtredTodos }) => {
+export const TodoList = ({ isLoading, array }) => {
     return (
         <>
             <h1 className={styles.title}>Список дел</h1>
@@ -9,10 +9,10 @@ export const TodoList = ({ isLoading, filtredTodos }) => {
             <ul className={styles.list}>
                 {isLoading ? (
                     <p className={styles.center}>Загрузка...</p>
-                ) : filtredTodos.length === 0 ? (
+                ) : array.length === 0 ? (
                     <p className={styles.center}>Задач нет</p>
                 ) : (
-                    filtredTodos.map(({ id, title }) => {
+                    array.map(({ id, title }) => {
                         return (
                             <li
                                 key={id}

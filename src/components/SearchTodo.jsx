@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { Button } from './Button';
-import { useSearchTodo } from '../hooks/useSearchTodo';
 import styles from '../styles/searchTodo.module.css';
 
-export const SearchTodo = () => {
-    const { searchValue, onReset, onSearch, onChange } = useSearchTodo();
+export const SearchTodo = ({ onReset, onSearch }) => {
+    const [searchValue, setSearchValue] = useState('');
+
+    const onChange = ({ target }) => {
+        setSearchValue(target.value);
+    };
 
     return (
         <div className={styles.container}>
@@ -18,8 +22,21 @@ export const SearchTodo = () => {
             />
 
             <div className={styles['button-list']}>
-                <Button onClick={onSearch}>Поиск</Button>
-                <Button onClick={onReset}>Отмена</Button>
+                <Button
+                    onClick={() => {
+                        onSearch(searchValue);
+                    }}
+                >
+                    Поиск
+                </Button>
+                <Button
+                    onClick={() => {
+                        onReset();
+                        setSearchValue('');
+                    }}
+                >
+                    Отмена
+                </Button>
             </div>
         </div>
     );

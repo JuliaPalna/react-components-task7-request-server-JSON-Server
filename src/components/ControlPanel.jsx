@@ -1,11 +1,31 @@
-import { useCreatNewTodo, useSortTodos } from '../hooks';
+import { use } from 'react';
+import { AppContext } from '../context';
+import { useCreatNewTodo } from '../hooks';
 import { Button } from './Button';
 import { SearchTodo } from './SearchTodo';
 import styles from '../styles/controlPanel.module.css';
 
-export const ControlPanel = () => {
+export const ControlPanel = ({ setFiltredTodos }) => {
+    const { todos } = use(AppContext);
     const { isCreating, onAddNewTodo } = useCreatNewTodo();
-    const { onSortTodos } = useSortTodos();
+
+    const onSortTodos = () => {
+        setFiltredTodos((prev) => {
+            return [...prev].sort((a, b) => a.title.localeCompare(b.title));
+        });
+    };
+
+    const onReset = () => {
+        setFiltredTodos(todos);
+    };
+
+    const onSearch = (searchValue) => {
+        setFiltredTodos((prev) => {
+            return prev.filter(({ title }) => {
+                return title.includes(searchValue);
+            });
+        });
+    };
 
     return (
         <>
@@ -17,7 +37,7 @@ export const ControlPanel = () => {
             </div>
 
             <div>
-                <SearchTodo />
+                <SearchTodo onReset={onReset} onSearch={onSearch} />
             </div>
         </>
     );

@@ -4,6 +4,7 @@ import { TodoList, ControlPanel } from './components';
 import { URL_DATA } from './constants/constants';
 import * as utils from './api/taskApi';
 import styles from './styles/app.module.css';
+import { reducer } from './reducer';
 
 export const App = () => {
     const [todos, setTodos] = useState([]);
@@ -28,47 +29,17 @@ export const App = () => {
     }, [todos]);
 
     const dispatch = (action) => {
-        const { type, payload } = action;
+        const newState = reducer(todos, action);
 
-        switch (type) {
-            case 'SET_TODO_DATA': {
-                setTodos((previous) => [...previous, payload]);
-                break;
-            }
-            case 'REMOVE_TODO_DATA': {
-                setTodos((previous) => {
-                    return previous.filter((todo) => {
-                        return String(todo.id) !== String(payload);
-                    });
-                });
-                break;
-            }
-            case 'UPDATE_TODO_DATA': {
-                setTodos((previous) => {
-                    return previous.map((todo) => {
-                        return String(todo.id) === String(payload.id)
-                            ? payload.updateTodo
-                            : todo;
-                    });
-                });
-                break;
-            }
-            case 'FILTRED_TODOS_DATA':
-            case 'SORTED_TODOS_DATA': {
-                setFiltredTodos(payload);
-                break;
-            }
-            default:
-                break;
-        }
+        setTodos(newState);
     };
 
     return (
         <AppContext value={{ todos, dispatch }}>
             <div className={styles.container}>
-                <ControlPanel />
+                <ControlPanel setFiltredTodos={setFiltredTodos} />
 
-                <TodoList isLoading={isLoading} filtredTodos={filtredTodos} />
+                <TodoList isLoading={isLoading} array={filtredTodos} />
             </div>
         </AppContext>
     );
