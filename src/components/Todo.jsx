@@ -6,20 +6,20 @@ import styles from '../styles/todo.module.css';
 export const Todo = ({ title, id }) => {
     const [valueTodo, setValueTodo] = useState(title);
     const { isRemoving, onRemoveTodo } = useRemoveTodo();
-    const { stateUpdeting, onUpdateTodos } = useUpdateTodos();
+    const { stateUpdating, onUpdateTodos } = useUpdateTodos();
 
     const onChangeValue = ({ target }) => {
         setValueTodo(target.value);
     };
 
-    const onClickUpdeting = () => {
-        if (stateUpdeting === 'edit') {
+    const onClickUpdating = () => {
+        if (stateUpdating === 'edit') {
             onUpdateTodos({ id, valueTodo });
         }
     };
 
     const getNameButton = () => {
-        switch (stateUpdeting) {
+        switch (stateUpdating) {
             case 'pending':
                 return 'Отправка...';
             case 'edit':
@@ -41,15 +41,15 @@ export const Todo = ({ title, id }) => {
 
             <div className={styles['button-list']}>
                 <Button
-                    size="smal"
-                    onClick={onClickUpdeting}
-                    isDisabled={stateUpdeting === 'pending'}
+                    size="small"
+                    onClick={onClickUpdating}
+                    isDisabled={stateUpdating === 'pending'}
                 >
                     {getNameButton()}
                 </Button>
 
                 <Button
-                    size="smal"
+                    size="small"
                     onClick={() => onRemoveTodo(id)}
                     isDisabled={isRemoving}
                 >

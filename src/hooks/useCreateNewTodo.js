@@ -3,7 +3,7 @@ import { AppContext } from '../context';
 import { URL_DATA } from '../constants/constants';
 import * as utils from '../api/taskApi';
 
-export const useCreatNewTodo = () => {
+export const useCreateNewTodo = () => {
     const { dispatch } = use(AppContext);
     const [isCreating, setIsCreating] = useState(false);
 

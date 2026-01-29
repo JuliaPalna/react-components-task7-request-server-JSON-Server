@@ -5,10 +5,10 @@ import * as utils from '../api/taskApi';
 
 export const useUpdateTodos = () => {
     const { dispatch } = use(AppContext);
-    const [stateUpdeting, setStateUpdeting] = useState('edit');
+    const [stateUpdating, setStateUpdating] = useState('edit');
 
     const onUpdateTodos = ({ id, valueTodo }) => {
-        setStateUpdeting('pending');
+        setStateUpdating('pending');
 
         utils
             .updateDataFetch({
@@ -26,12 +26,12 @@ export const useUpdateTodos = () => {
             .catch((error) => {
                 console.log(error.message);
             })
-            .finally(() => setStateUpdeting('edit'));
+            .finally(() => setStateUpdating('edit'));
     };
 
     return {
-        stateUpdeting,
-        setStateUpdeting,
+        stateUpdating,
+        setStateUpdating,
         onUpdateTodos,
     };
 };

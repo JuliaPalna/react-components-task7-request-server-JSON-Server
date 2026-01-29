@@ -8,7 +8,7 @@ import { reducer } from './reducer';
 
 export const App = () => {
     const [todos, setTodos] = useState([]);
-    const [filtredTodos, setFiltredTodos] = useState(todos);
+    const [filteredTodos, setFilteredTodos] = useState(todos);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export const App = () => {
     }, []);
 
     useEffect(() => {
-        setFiltredTodos(todos);
+        setFilteredTodos(todos);
     }, [todos]);
 
     const dispatch = (action) => {
@@ -37,9 +37,9 @@ export const App = () => {
     return (
         <AppContext value={{ todos, dispatch }}>
             <div className={styles.container}>
-                <ControlPanel setFiltredTodos={setFiltredTodos} />
+                <ControlPanel setFilteredTodos={setFilteredTodos} />
 
-                <TodoList isLoading={isLoading} array={filtredTodos} />
+                <TodoList isLoading={isLoading} array={filteredTodos} />
             </div>
         </AppContext>
     );
