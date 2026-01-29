@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Button } from './Button';
-import { useRemoveTodo, useUpdateTodos } from '../hooks';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../components';
+import { useRemoveTodo, useUpdateTodos } from '../hooks';
 import { LOADING_TIMEOUT, URL_DATA } from '../constants/constants';
-import * as taskApi from '../api/taskApi';
+import { fetchTodos } from '../api/todoApi';
 import styles from '../styles/todo.module.css';
 
-export const Todo = ({ setTodos }) => {
+export const TodoPage = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [todo, setTodo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const { isRemoving, onRemoveTodo } = useRemoveTodo({ setTodos });
-    const { stateUpdating, setStateUpdating, onUpdateTodos } = useUpdateTodos({
-        setTodos,
-    });
+    const { onRemoveTodo } = useRemoveTodo();
+    const { stateUpdating, onUpdateTodos } = useUpdateTodos();
 
     useEffect(() => {
         let isLoadingTimeout = false;
@@ -31,7 +29,7 @@ export const Todo = ({ setTodos }) => {
             }
         }, LOADING_TIMEOUT);
 
-        const todoData = taskApi.getDataFetchRequest({
+        const todoData = fetchTodos({
             url: `${URL_DATA}/${params.id}`,
         });
 
@@ -59,10 +57,8 @@ export const Todo = ({ setTodos }) => {
     };
 
     const onClickUpdating = () => {
-        if (stateUpdating === 'save') {
+        if (stateUpdating === 'edit') {
             onUpdateTodos({ value: todo.title, id: params.id });
-        } else if (stateUpdating === 'edit') {
-            setStateUpdating('save');
         }
     };
 
@@ -70,8 +66,6 @@ export const Todo = ({ setTodos }) => {
         switch (stateUpdating) {
             case 'pending':
                 return 'Отправка...';
-            case 'save':
-                return 'Сохранить';
             case 'edit':
             default:
                 return 'Редактировать';
@@ -80,29 +74,24 @@ export const Todo = ({ setTodos }) => {
 
     return (
         <>
-            <Button size="small">
-                <Link className={styles.link} to="/">
-                    Назад
-                </Link>
-            </Button>
+            <div>
+                <Link to="/">Назад</Link>
+            </div>
 
             {isLoading ? (
                 <p>Загрузка...</p>
             ) : (
                 <>
                     <h1 className={styles.title}>Наименование задачи:</h1>
-                    {stateUpdating !== 'edit' ? (
-                        <input
-                            type="text"
-                            name="newTodo"
-                            placeholder="Введите новое дело..."
-                            value={todo.title}
-                            onChange={onChangeValue}
-                            className={styles.input}
-                        />
-                    ) : (
-                        <p>{todo.title}</p>
-                    )}
+
+                    <textarea
+                        type="text"
+                        name="newTodo"
+                        placeholder="Введите новое дело..."
+                        value={todo.title}
+                        onChange={onChangeValue}
+                        className={styles.input}
+                    />
 
                     <div className={styles['button-list']}>
                         <Button
@@ -112,17 +101,10 @@ export const Todo = ({ setTodos }) => {
                             {getNameButton()}
                         </Button>
 
-                        <Button
-                            onClick={() => onRemoveTodo({ id: params.id })}
-                            isDisabled={isRemoving}
-                        >
+                        <Button onClick={() => onRemoveTodo({ id: params.id })}>
                             Удалить
                         </Button>
                     </div>
-
-                    {isRemoving && (
-                        <p className={styles.statusInfo}>Задача удалена</p>
-                    )}
                 </>
             )}
         </>

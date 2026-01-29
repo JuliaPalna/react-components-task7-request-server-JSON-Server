@@ -1,23 +1,16 @@
-import { useState } from 'react';
-import * as taskApi from '../api/taskApi';
+import { useNavigate } from 'react-router-dom';
+import { fetchRemoveTodo } from '../api/todoApi';
 import { URL_DATA } from '../constants/constants';
 
-export const useRemoveTodo = ({ setTodos }) => {
-    const [isRemoving, setIsRemoving] = useState(false);
+export const useRemoveTodo = () => {
+    const navigate = useNavigate();
 
     const onRemoveTodo = ({ id }) => {
-        setIsRemoving(true);
-
-        taskApi
-            .removeDataFetchRequest({
-                url: `${URL_DATA}/${id}`,
-            })
+        fetchRemoveTodo({
+            url: `${URL_DATA}/${id}`,
+        })
             .then(() => {
-                setTodos((previous) => {
-                    return previous.filter((todo) => {
-                        return String(todo.id) !== String(id);
-                    });
-                });
+                navigate('/', { replace: true });
             })
             .catch((error) => {
                 console.log(error.message);
@@ -25,7 +18,6 @@ export const useRemoveTodo = ({ setTodos }) => {
     };
 
     return {
-        isRemoving,
         onRemoveTodo,
     };
 };

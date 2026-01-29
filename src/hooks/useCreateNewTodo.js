@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as taskApi from '../api/taskApi';
+import { fetchCreateTodo } from '../api/todoApi';
 import { URL_DATA } from '../constants/constants';
 
 export const useCreateNewTodo = ({ setTodos }) => {
@@ -8,11 +8,10 @@ export const useCreateNewTodo = ({ setTodos }) => {
     const onAddNewTodo = () => {
         setIsCreating(true);
 
-        taskApi
-            .createDataFetchRequest({
-                url: URL_DATA,
-                data: { title: 'Новая задача' },
-            })
+        fetchCreateTodo({
+            url: URL_DATA,
+            data: { title: '...' },
+        })
             .then((newTodo) => {
                 setTodos((previous) => [...previous, newTodo]);
             })

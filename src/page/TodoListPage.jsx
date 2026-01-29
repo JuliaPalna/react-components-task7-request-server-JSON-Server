@@ -1,14 +1,30 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Button } from './Button';
-import { SearchTodo } from './SearchTodo';
+import { Button, SearchTodo } from '../components';
 import { useCreateNewTodo } from '../hooks';
-import { getTrimString } from '../utils/utils';
+import { URL_DATA } from '../constants/constants';
+import { fetchTodos } from '../api/todoApi';
 import styles from '../styles/todoList.module.css';
 
-export const TodoList = ({ todos, setTodos, isLoading }) => {
+export const TodoListPage = () => {
+    const [todos, setTodos] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [filteredTodos, setFilteredTodos] = useState(todos);
     const { isCreating, onAddNewTodo } = useCreateNewTodo({ setTodos });
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        const todosData = fetchTodos({
+            url: URL_DATA,
+        });
+
+        todosData
+            .then((data) => {
+                setTodos(data);
+            })
+            .finally(() => setIsLoading(false));
+    }, []);
 
     useEffect(() => {
         setFilteredTodos(todos);
@@ -53,12 +69,7 @@ export const TodoList = ({ todos, setTodos, isLoading }) => {
                                     className={styles.link}
                                     to={`/task/${id}`}
                                 >
-                                    <p>
-                                        {getTrimString({
-                                            string: title,
-                                            length: 20,
-                                        })}
-                                    </p>
+                                    <p>{title}</p>
                                 </Link>
                             </li>
                         );

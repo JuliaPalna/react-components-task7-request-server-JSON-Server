@@ -1,4 +1,4 @@
-export async function getDataFetchRequest({ url }) {
+export async function fetchTodos({ url }) {
     const response = await fetch(`${url}`);
     if (!response.ok) {
         return null;
@@ -6,7 +6,7 @@ export async function getDataFetchRequest({ url }) {
     return response.json();
 }
 
-export async function createDataFetchRequest({ url, data }) {
+export async function fetchCreateTodo({ url, data }) {
     const response = await fetch(`${url}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -15,7 +15,7 @@ export async function createDataFetchRequest({ url, data }) {
     return await response.json();
 }
 
-export async function updateDataFetchRequest({ url, data }) {
+export async function fetchUpdateTodo({ url, data }) {
     const response = await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -24,7 +24,7 @@ export async function updateDataFetchRequest({ url, data }) {
     return await response.json();
 }
 
-export async function removeDataFetchRequest({ url }) {
+export async function fetchRemoveTodo({ url }) {
     const response = await fetch(url, {
         method: 'DELETE',
     });

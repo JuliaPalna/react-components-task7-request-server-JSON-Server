@@ -1,6 +1,6 @@
 import styles from '../styles/containerError.module.css';
 
-export const NotFound404 = () => {
+export const NotFoundPage = () => {
     return (
         <div className={styles.container}>
             <p>404 Ошибка!</p>

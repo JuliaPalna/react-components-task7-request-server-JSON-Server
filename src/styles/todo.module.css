@@ -9,10 +9,6 @@
     width: 100%;
 }
 
-.link {
-    color: var(--light-color-main);
-}
-
 .button-list {
     display: flex;
     flex-direction: row;
