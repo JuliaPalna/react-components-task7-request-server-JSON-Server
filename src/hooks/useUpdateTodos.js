@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import * as taskApi from '../api/taskApi';
+import { URL_DATA } from '../constants/constants';
 
 export const useUpdateTodos = ({ setTodos }) => {
-    const [stateUpdeting, setStateUpdeting] = useState('edit');
+    const [stateUpdating, setStateUpdating] = useState('edit');
 
     const onUpdateTodos = ({ value, id }) => {
-        setStateUpdeting('pending');
+        setStateUpdating('pending');
 
-        utils
+        taskApi
             .updateDataFetchRequest({
                 url: `${URL_DATA}/${id}`,
                 data: {
@@ -27,12 +27,12 @@ export const useUpdateTodos = ({ setTodos }) => {
             .catch((error) => {
                 console.log(error.message);
             })
-            .finally(() => setStateUpdeting('edit'));
+            .finally(() => setStateUpdating('edit'));
     };
 
     return {
-        stateUpdeting,
-        setStateUpdeting,
+        stateUpdating,
+        setStateUpdating,
         onUpdateTodos,
     };
 };

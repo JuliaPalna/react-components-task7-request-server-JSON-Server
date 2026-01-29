@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useSearchTodo = ({ todos, setFiltredTodos }) => {
+export const useSearchTodo = ({ todos, setFilteredTodos }) => {
     const [searchValue, setSearchValue] = useState('');
 
     const onChange = ({ target }) => {
@@ -8,16 +8,16 @@ export const useSearchTodo = ({ todos, setFiltredTodos }) => {
     };
 
     const onSearch = () => {
-        const filtredTodos = todos.filter(({ title }) => {
+        const filteredTodos = todos.filter(({ title }) => {
             return title.includes(searchValue);
         });
 
-        setFiltredTodos(filtredTodos);
+        setFilteredTodos(filteredTodos);
     };
 
     const onReset = () => {
         setSearchValue('');
-        setFiltredTodos(todos);
+        setFilteredTodos(todos);
     };
 
     return {

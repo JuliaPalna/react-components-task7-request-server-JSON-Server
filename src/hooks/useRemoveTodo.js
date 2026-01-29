@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import * as taskApi from '../api/taskApi';
+import { URL_DATA } from '../constants/constants';
 
 export const useRemoveTodo = ({ setTodos }) => {
     const [isRemoving, setIsRemoving] = useState(false);
@@ -8,7 +8,7 @@ export const useRemoveTodo = ({ setTodos }) => {
     const onRemoveTodo = ({ id }) => {
         setIsRemoving(true);
 
-        utils
+        taskApi
             .removeDataFetchRequest({
                 url: `${URL_DATA}/${id}`,
             })

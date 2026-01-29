@@ -2,10 +2,10 @@ import { Button } from './Button';
 import { useSearchTodo } from '../hooks/useSearchTodo';
 import styles from '../styles/searchTodo.module.css';
 
-export const SearchTodo = ({ todos, setFiltredTodos }) => {
+export const SearchTodo = ({ todos, setFilteredTodos }) => {
     const { searchValue, onReset, onSearch, onChange } = useSearchTodo({
         todos,
-        setFiltredTodos,
+        setFilteredTodos,
     });
 
     return (

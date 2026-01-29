@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { TodoList } from './TodoList';
-import { Todo } from './Todo';
-import { NotFound404 } from './NotFound404';
-import { TodoLoaderError } from './TodoLoaderError';
-import { URL_DATA } from '../variables/variables';
-import * as utils from '../utils/utils';
-import styles from '../styles/App.module.css';
+import { TodoList, Todo, NotFound404, TodoLoaderError } from './components';
+import { URL_DATA } from './constants/constants';
+import * as taskApi from './api/taskApi';
+import styles from './styles/app.module.css';
 
 export const App = () => {
     const [todos, setTodos] = useState([]);
@@ -15,7 +12,7 @@ export const App = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const todosData = utils.getDataFetchRequest({
+        const todosData = taskApi.getDataFetchRequest({
             url: URL_DATA,
         });
 

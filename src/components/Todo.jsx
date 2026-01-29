@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Button } from './Button';
 import { useRemoveTodo, useUpdateTodos } from '../hooks';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { LOADING_TIMEOUT, URL_DATA } from '../variables/variables';
-import * as utils from '../utils/utils';
+import { LOADING_TIMEOUT, URL_DATA } from '../constants/constants';
+import * as taskApi from '../api/taskApi';
 import styles from '../styles/todo.module.css';
 
 export const Todo = ({ setTodos }) => {
@@ -12,7 +12,7 @@ export const Todo = ({ setTodos }) => {
     const [todo, setTodo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const { isRemoving, onRemoveTodo } = useRemoveTodo({ setTodos });
-    const { stateUpdeting, setStateUpdeting, onUpdateTodos } = useUpdateTodos({
+    const { stateUpdating, setStateUpdating, onUpdateTodos } = useUpdateTodos({
         setTodos,
     });
 
@@ -31,7 +31,7 @@ export const Todo = ({ setTodos }) => {
             }
         }, LOADING_TIMEOUT);
 
-        const todoData = utils.getDataFetchRequest({
+        const todoData = taskApi.getDataFetchRequest({
             url: `${URL_DATA}/${params.id}`,
         });
 
@@ -58,16 +58,16 @@ export const Todo = ({ setTodos }) => {
         setTodo({ ...todo, title: target.value });
     };
 
-    const onClickUpdeting = () => {
-        if (stateUpdeting === 'save') {
+    const onClickUpdating = () => {
+        if (stateUpdating === 'save') {
             onUpdateTodos({ value: todo.title, id: params.id });
-        } else if (stateUpdeting === 'edit') {
-            setStateUpdeting('save');
+        } else if (stateUpdating === 'edit') {
+            setStateUpdating('save');
         }
     };
 
     const getNameButton = () => {
-        switch (stateUpdeting) {
+        switch (stateUpdating) {
             case 'pending':
                 return 'Отправка...';
             case 'save':
@@ -80,7 +80,7 @@ export const Todo = ({ setTodos }) => {
 
     return (
         <>
-            <Button size="smal">
+            <Button size="small">
                 <Link className={styles.link} to="/">
                     Назад
                 </Link>
@@ -91,15 +91,13 @@ export const Todo = ({ setTodos }) => {
             ) : (
                 <>
                     <h1 className={styles.title}>Наименование задачи:</h1>
-                    {stateUpdeting !== 'edit' ? (
+                    {stateUpdating !== 'edit' ? (
                         <input
                             type="text"
                             name="newTodo"
                             placeholder="Введите новое дело..."
                             value={todo.title}
                             onChange={onChangeValue}
-                            min={3}
-                            max={20}
                             className={styles.input}
                         />
                     ) : (
@@ -108,8 +106,8 @@ export const Todo = ({ setTodos }) => {
 
                     <div className={styles['button-list']}>
                         <Button
-                            onClick={() => onClickUpdeting()}
-                            isDisabled={stateUpdeting === 'pending'}
+                            onClick={() => onClickUpdating()}
+                            isDisabled={stateUpdating === 'pending'}
                         >
                             {getNameButton()}
                         </Button>

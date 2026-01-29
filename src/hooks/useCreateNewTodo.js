@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import * as utils from '../utils/utils';
-import { URL_DATA } from '../variables/variables';
+import * as taskApi from '../api/taskApi';
+import { URL_DATA } from '../constants/constants';
 
-export const useCreatNewTodo = ({ setTodos }) => {
+export const useCreateNewTodo = ({ setTodos }) => {
     const [isCreating, setIsCreating] = useState(false);
 
     const onAddNewTodo = () => {
         setIsCreating(true);
 
-        utils
+        taskApi
             .createDataFetchRequest({
                 url: URL_DATA,
                 data: { title: 'Новая задача' },
